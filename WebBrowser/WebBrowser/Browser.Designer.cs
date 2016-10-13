@@ -32,17 +32,17 @@
             this.bckbutton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addBookmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fwdbutton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.newTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.duplicateTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addBookmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -54,6 +54,7 @@
             this.URLBox.Name = "URLBox";
             this.URLBox.Size = new System.Drawing.Size(670, 20);
             this.URLBox.TabIndex = 0;
+            this.URLBox.Click += new System.EventHandler(this.URLBox_Click);
             // 
             // bckbutton
             // 
@@ -87,6 +88,21 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // newTabToolStripMenuItem
+            // 
+            this.newTabToolStripMenuItem.Name = "newTabToolStripMenuItem";
+            this.newTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.newTabToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.newTabToolStripMenuItem.Text = "New Tab";
+            this.newTabToolStripMenuItem.Click += new System.EventHandler(this.newTabToolStripMenuItem_Click);
+            // 
+            // duplicateTabToolStripMenuItem
+            // 
+            this.duplicateTabToolStripMenuItem.Name = "duplicateTabToolStripMenuItem";
+            this.duplicateTabToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.duplicateTabToolStripMenuItem.Text = "Duplicate Tab";
+            this.duplicateTabToolStripMenuItem.Click += new System.EventHandler(this.duplicateTabToolStripMenuItem_Click);
+            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -95,6 +111,35 @@
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // setHomepageToolStripMenuItem
+            // 
+            this.setHomepageToolStripMenuItem.Name = "setHomepageToolStripMenuItem";
+            this.setHomepageToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.setHomepageToolStripMenuItem.Text = "Set Homepage";
+            this.setHomepageToolStripMenuItem.Click += new System.EventHandler(this.setHomepageToolStripMenuItem_Click);
+            // 
+            // addBookmarkToolStripMenuItem
+            // 
+            this.addBookmarkToolStripMenuItem.Name = "addBookmarkToolStripMenuItem";
+            this.addBookmarkToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+            this.addBookmarkToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.addBookmarkToolStripMenuItem.Text = "Add Bookmark";
+            this.addBookmarkToolStripMenuItem.Click += new System.EventHandler(this.addBookmarkToolStripMenuItem_Click);
+            // 
+            // homeToolStripMenuItem
+            // 
+            this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
+            this.homeToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.homeToolStripMenuItem.Text = "Home";
+            this.homeToolStripMenuItem.Click += new System.EventHandler(this.homeToolStripMenuItem_Click);
+            // 
+            // bookmarksToolStripMenuItem
+            // 
+            this.bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
+            this.bookmarksToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
+            this.bookmarksToolStripMenuItem.Text = "Bookmarks";
+            this.bookmarksToolStripMenuItem.Click += new System.EventHandler(this.bookmarksToolStripMenuItem_Click);
             // 
             // fwdbutton
             // 
@@ -139,42 +184,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(746, 463);
             this.textBox1.TabIndex = 0;
-            // 
-            // newTabToolStripMenuItem
-            // 
-            this.newTabToolStripMenuItem.Name = "newTabToolStripMenuItem";
-            this.newTabToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newTabToolStripMenuItem.Text = "New Tab";
-            // 
-            // homeToolStripMenuItem
-            // 
-            this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
-            this.homeToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.homeToolStripMenuItem.Text = "Home";
-            // 
-            // bookmarksToolStripMenuItem
-            // 
-            this.bookmarksToolStripMenuItem.Name = "bookmarksToolStripMenuItem";
-            this.bookmarksToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
-            this.bookmarksToolStripMenuItem.Text = "Bookmarks";
-            // 
-            // duplicateTabToolStripMenuItem
-            // 
-            this.duplicateTabToolStripMenuItem.Name = "duplicateTabToolStripMenuItem";
-            this.duplicateTabToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.duplicateTabToolStripMenuItem.Text = "Duplicate Tab";
-            // 
-            // setHomepageToolStripMenuItem
-            // 
-            this.setHomepageToolStripMenuItem.Name = "setHomepageToolStripMenuItem";
-            this.setHomepageToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.setHomepageToolStripMenuItem.Text = "Set Homepage";
-            // 
-            // addBookmarkToolStripMenuItem
-            // 
-            this.addBookmarkToolStripMenuItem.Name = "addBookmarkToolStripMenuItem";
-            this.addBookmarkToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.addBookmarkToolStripMenuItem.Text = "Add Bookmark";
             // 
             // Browser
             // 
