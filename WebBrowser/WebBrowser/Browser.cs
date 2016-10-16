@@ -25,16 +25,26 @@ namespace WebBrowser
         private void InitialiseWindow()
         {
             URLBox.Text = wb.GetHomepage();
+            wb.SetTabControl(tabControl);
+            wb.SetTextBox(textBox);
+            
+
+        }
+
+        private void bckbutton_Click(object sender, EventArgs e)
+        {
+            wb.Back();
         }
 
         private void fwdbutton_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "TESTING";
+            textBox.Text = "TESTING";
+            wb.Forward();
         }
 
         private void URLBox_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "TESTINGS";
+            textBox.Text = "TESTINGS";
         }
 
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)

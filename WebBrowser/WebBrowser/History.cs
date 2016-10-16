@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,29 +8,38 @@ using System.Threading.Tasks;
 namespace WebBrowser
 {
 
-    struct HistorySlice
+    struct Website
     {
-        Website website;
-        DateTime time;
-        public HistorySlice (Website website, DateTime time)
+        String name;
+        String url;
+        String time;
+        public Website (String name, String url)
         {
-            this.website = website;
-            this.time = time;
+            DateTime dateTime = DateTime.Now;
+            this.name = name;
+            this.url = url;
+            this.time = dateTime.ToString();
         }
     }
 
-    class History
+    public class History
     {
-        private List<HistorySlice> history;
+        private List<Website> history;
 
         public History()
         {
-            history = new List<HistorySlice>();
+            history = new List<Website>();
         }
 
         public int GetLength()
         {
             return history.Count;
+        }
+
+        public void Add(String name, String url)
+        {
+            Website website = new Website(name, url);
+            history.Add(website);
         }
     }
 }

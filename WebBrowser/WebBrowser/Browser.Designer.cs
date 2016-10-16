@@ -41,11 +41,11 @@
             this.bookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fwdbutton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox = new System.Windows.Forms.TextBox();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nextTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.previousTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
-            this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // URLBox
@@ -65,12 +65,14 @@
             this.bckbutton.TabIndex = 2;
             this.bckbutton.Text = "<-";
             this.bckbutton.UseVisualStyleBackColor = true;
+            this.bckbutton.Click += new System.EventHandler(this.bckbutton_Click);
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.homeToolStripMenuItem,
             this.bookmarksToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -154,42 +156,56 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.HotTrack = true;
             this.tabControl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tabControl.Location = new System.Drawing.Point(12, 56);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
+            this.tabControl.Padding = new System.Drawing.Point(0, 0);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(760, 493);
+            this.tabControl.Size = new System.Drawing.Size(760, 27);
             this.tabControl.TabIndex = 6;
             // 
-            // tabPage1
+            // textBox
             // 
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.tabPage1.Size = new System.Drawing.Size(752, 467);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.textBox.BackColor = System.Drawing.Color.White;
+            this.textBox.Location = new System.Drawing.Point(12, 81);
+            this.textBox.Multiline = true;
+            this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
+            this.textBox.Size = new System.Drawing.Size(760, 465);
+            this.textBox.TabIndex = 0;
             // 
-            // textBox1
+            // viewToolStripMenuItem
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(746, 463);
-            this.textBox1.TabIndex = 0;
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nextTabToolStripMenuItem,
+            this.previousTabToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // nextTabToolStripMenuItem
+            // 
+            this.nextTabToolStripMenuItem.Name = "nextTabToolStripMenuItem";
+            this.nextTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Tab)));
+            this.nextTabToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.nextTabToolStripMenuItem.Text = "Next Tab";
+            // 
+            // previousTabToolStripMenuItem
+            // 
+            this.previousTabToolStripMenuItem.Name = "previousTabToolStripMenuItem";
+            this.previousTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Tab)));
+            this.previousTabToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.previousTabToolStripMenuItem.Text = "Previous Tab";
             // 
             // Browser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.textBox);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.fwdbutton);
             this.Controls.Add(this.bckbutton);
@@ -200,9 +216,6 @@
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -217,14 +230,16 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.Button fwdbutton;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem newTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setHomepageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addBookmarkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bookmarksToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nextTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem previousTabToolStripMenuItem;
+        public System.Windows.Forms.TextBox textBox;
     }
 }
 
