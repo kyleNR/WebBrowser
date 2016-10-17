@@ -17,30 +17,22 @@ namespace WebBrowser
         private List<Tab> tabList;
         private Tab currentTab;
 
-        private TabControl tc;
-        private TextBox tb;
+        private Browser browser;
 
-        public WebBrowser()
+        public WebBrowser(Browser browser)
         {
+            this.browser = browser;
             history = new History();
             homepage = LoadHomepage();
             bookmarks = LoadBookmarks();
             tabList = new List<Tab>();
-        }
-
-        public void SetTextBox(TextBox tb)
-        {
-            this.tb = tb;
-        }
-
-        public void SetTabControl(TabControl tc)
-        {
-            this.tc = tc;
+            
         }
 
         private String LoadHomepage()
         {
             // Try getting homepage
+                //FileGetter fg = new FileGetter;
             // else
             return "http://www.google.com";
         }
@@ -57,46 +49,29 @@ namespace WebBrowser
 
         public void NewTab()
         {
-            //Thread thread = new Thread(new ParameterizedThreadStart(newThread));
+            /*
             TabPage tp = new TabPage("New Tab");
+            TabControl tc = browser.tabControl;
             tc.Controls.Add(tp);
             tc.SelectedTab = tp;
+            */
 
-            //Thread thread = new Thread(() => NewThread(tp));
-            //thread.Start();
-            TempThreadWorkAround(tp);
-            tb.Text = currentTab.AccessURL(homepage);
+            Thread thread = new Thread(() => new Tab(browser, this));
+            thread.Start();
         }
 
         private void NewThread(TabPage tp)
         {
             // Figure out how to do the event handler stuff.
             // Link thread with tab.
-            currentTab = new Tab(tp, tb);
-            tabList.Add(currentTab);
-
-            
-        }
-
-        private void TempThreadWorkAround(TabPage tp)
-        {
-            currentTab = new Tab(tp, tb);
+            currentTab = new Tab(browser, this);
             tabList.Add(currentTab);
         }
 
         public void switchTab(int index)
         {
-            currentTab = tabList[index];
-        }
 
-        public void Forward()
-        {
-            currentTab.Forward();
-        }
-
-        public void Back()
-        {
-            currentTab.Back();
+            //currentTab = tabList[index];
         }
     }
 }

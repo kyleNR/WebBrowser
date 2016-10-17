@@ -6,56 +6,59 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
+using System.Net.Http;
 
 namespace WebBrowser
 {
     class Tab
     {
+        private Browser browser;
+        private WebBrowser wb;
         private TabPage tp;
 
         private History history;
         private String url;
-        private TextBox box;
         private String page;
 
-        public Tab(TabPage tp, TextBox box)
+        public Tab(Browser browser, WebBrowser wb)
         {
-            this.tp = tp;
-            this.box = box;
+            this.browser = browser;
+            this.wb = wb;
             this.page = "";
             history = new History();
+            CreateTab();
         }
 
-        public String AccessURL(String url)
+        public void AccessURL(String url)
         {
+            browser.Invoke(browser.tabPageLoading);
             page = GetHTTP(url);
             this.url = url;
             history.Add("", url);
+            browser.Invoke(browser.textBoxSetDelegate,page);
+        }
 
-            return page;
+        private void CreateTab()
+        {
+            tp = new TabPage();
+            browser.Invoke(browser.tabControlAddDelegate, tp);
+            AccessURL(wb.GetHomepage());
         }
 
         private String GetHTTP(String url)
         {
-            /*
-            using (var client = new HttpClient())
-            {
-                return client.GetStringAsync("http://www.google.com").ToString();
-            }
-            */
             using (var client = new WebClient())
             {
                 try
                 {
-                    var responseString = client.DownloadString("http://www.google.com/dwdwdwdw");
+                    var responseString = client.DownloadString("http://www.google.com/");
                     return responseString;
                 } catch (WebException e)
                 {
-                    MessageBox.Show(e.Message);
+                    //MessageBox.Show(e.Message);
+                    return e.Message;
                 }
             }
-            return "";
-
         }
 
         public void Forward()
@@ -64,6 +67,11 @@ namespace WebBrowser
         }
 
         public void Back()
+        {
+
+        }
+
+        public void Close()
         {
 
         }

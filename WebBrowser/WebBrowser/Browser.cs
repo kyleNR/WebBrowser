@@ -15,31 +15,57 @@ namespace WebBrowser
 
         private WebBrowser wb;
 
+        public delegate void defaultDelegate();
+        public delegate void stringDelegate(String text);
+        public delegate void tabPageDelegate2(TabPage tp);
+        public defaultDelegate tabPageLoading;
+        public stringDelegate textBoxSetDelegate;
+        public tabPageDelegate2 tabControlAddDelegate;
+
         public Browser()
         {
             InitializeComponent();
-            wb = new WebBrowser();
+            wb = new WebBrowser(this);
             InitialiseWindow();
+            tabPageLoading = new defaultDelegate(tabPageLoadingMethod);
+            textBoxSetDelegate = new stringDelegate(SetTextBoxMethod);
+            tabControlAddDelegate = new tabPageDelegate2(AddTabPage);
         }
 
         private void InitialiseWindow()
         {
             URLBox.Text = wb.GetHomepage();
-            wb.SetTabControl(tabControl);
-            wb.SetTextBox(textBox);
-            
-
         }
+
+        public void SetTextBoxMethod(String text)
+        {
+            if (textBox.Cursor == Cursors.WaitCursor)
+                textBox.Cursor = Cursors.Default;
+            textBox.Text = text;
+        }
+
+        public void AddTabPage(TabPage tp)
+        {
+            tabControl.Controls.Add(tp);
+            tabControl.SelectedTab = tp;
+            tp.Text = "New Tab";
+        }
+
+        public void tabPageLoadingMethod()
+        {
+            textBox.Text = "Loading";
+            textBox.Cursor = Cursors.WaitCursor;
+        }
+
 
         private void bckbutton_Click(object sender, EventArgs e)
         {
-            wb.Back();
+            
         }
 
         private void fwdbutton_Click(object sender, EventArgs e)
         {
             textBox.Text = "TESTING";
-            wb.Forward();
         }
 
         private void URLBox_Click(object sender, EventArgs e)
@@ -75,6 +101,14 @@ namespace WebBrowser
 
         private void duplicateTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void tabControl_SelectedIndexChanged(Object sender, EventArgs e)
+        {
+
+            MessageBox.Show("You are in the TabControl.SelectedIndexChanged event.");
+            wb.switchTab(tabControl.SelectedIndex);
 
         }
     }
