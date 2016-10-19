@@ -42,6 +42,11 @@ namespace WebBrowser
             return homepage;
         }
 
+        public void SetHomepage()
+        {
+
+        }
+
         private List<Website> LoadBookmarks()
         {
             return new List<Website>();
@@ -49,29 +54,50 @@ namespace WebBrowser
 
         public void NewTab()
         {
-            /*
-            TabPage tp = new TabPage("New Tab");
-            TabControl tc = browser.tabControl;
-            tc.Controls.Add(tp);
-            tc.SelectedTab = tp;
-            */
-
             Thread thread = new Thread(() => new Tab(browser, this));
             thread.Start();
         }
 
-        private void NewThread(TabPage tp)
+        public void DuplicateTab()
         {
-            // Figure out how to do the event handler stuff.
-            // Link thread with tab.
-            currentTab = new Tab(browser, this);
-            tabList.Add(currentTab);
+            Thread thread = new Thread(() => new Tab(browser, this, currentTab));
+            thread.Start();
         }
 
-        public void switchTab(int index)
+        public void SetCurrentTab(Tab tab)
+        {
+            currentTab = tab;
+            if (!tabList.Contains(tab))
+                tabList.Add(tab);
+        }
+
+        public void SwitchTab(int index)
+        {
+            currentTab = tabList[index];
+            Thread thread = new Thread(() => currentTab.TabSwitch());
+            thread.Start();
+        }
+
+        public void Refresh()
+        {
+            Thread thread = new Thread(() => currentTab.Refresh());
+            thread.Start();
+        }
+
+        public void Query(String url)
+        {
+            Thread thread = new Thread(() => currentTab.AccessURL(url));
+            thread.Start();
+        }
+
+        public void Forward()
         {
 
-            //currentTab = tabList[index];
+        }
+
+        public void Back()
+        {
+
         }
     }
 }

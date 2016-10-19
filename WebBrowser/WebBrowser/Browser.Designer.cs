@@ -35,6 +35,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBookmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,12 +46,12 @@
             this.bookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fwdbutton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tabContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateTabToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.tabContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // URLBox
@@ -59,7 +60,7 @@
             this.URLBox.Name = "URLBox";
             this.URLBox.Size = new System.Drawing.Size(670, 20);
             this.URLBox.TabIndex = 0;
-            this.URLBox.Click += new System.EventHandler(this.URLBox_Click);
+            this.URLBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.URLBox_KeyDown);
             // 
             // bckbutton
             // 
@@ -90,7 +91,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newTabToolStripMenuItem,
-            this.duplicateTabToolStripMenuItem});
+            this.duplicateTabToolStripMenuItem,
+            this.refreshToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -109,6 +111,14 @@
             this.duplicateTabToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.duplicateTabToolStripMenuItem.Text = "Duplicate Tab";
             this.duplicateTabToolStripMenuItem.Click += new System.EventHandler(this.duplicateTabToolStripMenuItem_Click);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -149,6 +159,7 @@
             this.nextTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Tab)));
             this.nextTabToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.nextTabToolStripMenuItem.Text = "Next Tab";
+            this.nextTabToolStripMenuItem.Click += new System.EventHandler(this.nextTabToolStripMenuItem_Click);
             // 
             // previousTabToolStripMenuItem
             // 
@@ -157,6 +168,7 @@
             | System.Windows.Forms.Keys.Tab)));
             this.previousTabToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.previousTabToolStripMenuItem.Text = "Previous Tab";
+            this.previousTabToolStripMenuItem.Click += new System.EventHandler(this.previousTabToolStripMenuItem_Click);
             // 
             // homeToolStripMenuItem
             // 
@@ -196,13 +208,14 @@
             this.tabControl.TabIndex = 6;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
-            // contextMenuStrip1
+            // tabContextMenuStrip
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tabContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeTabToolStripMenuItem,
             this.duplicateTabToolStripMenuItem1});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 48);
+            this.tabContextMenuStrip.Name = "contextMenuStrip1";
+            this.tabContextMenuStrip.Size = new System.Drawing.Size(148, 48);
+            this.tabContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.tabContextMenuStrip_Opening);
             // 
             // closeTabToolStripMenuItem
             // 
@@ -239,18 +252,16 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Browser";
-            this.Text = "Form1";
+            this.Text = "Web Browser";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.tabContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox URLBox;
         private System.Windows.Forms.Button bckbutton;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -267,9 +278,11 @@
         private System.Windows.Forms.ToolStripMenuItem previousTabToolStripMenuItem;
         public System.Windows.Forms.TextBox textBox;
         public System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateTabToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        public System.Windows.Forms.ContextMenuStrip tabContextMenuStrip;
+        public System.Windows.Forms.TextBox URLBox;
     }
 }
 

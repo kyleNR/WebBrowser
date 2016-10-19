@@ -24,22 +24,42 @@ namespace WebBrowser
 
     public class History
     {
-        private List<Website> history;
+        private int index;
+        private List<Website> webList;
 
         public History()
         {
-            history = new List<Website>();
+            webList = new List<Website>();
+            index = -1;
         }
+
+        public History(History oldHistory)
+        {
+
+            //webList = Duplicate(oldHistory);
+        }
+
+        public int GetIndex()
+        {
+            return index;
+        }
+
+        /*
+        public List<Website> GetWebList()
+        {
+            return webList;
+        }*/
 
         public int GetLength()
         {
-            return history.Count;
+            return webList.Count;
         }
 
         public void Add(String name, String url)
         {
             Website website = new Website(name, url);
-            history.Add(website);
+            webList.Add(website);
+            index++;
         }
     }
 }

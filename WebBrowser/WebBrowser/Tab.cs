@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 
 namespace WebBrowser
 {
@@ -16,33 +17,61 @@ namespace WebBrowser
         private WebBrowser wb;
         private TabPage tp;
 
-        private History history;
-        private String url;
-        private String page;
+        private int index;
+        public History history;
+        public String url;
+        public String page;
 
         public Tab(Browser browser, WebBrowser wb)
         {
             this.browser = browser;
             this.wb = wb;
-            this.page = "";
+            this.page = ""; 
             history = new History();
+            CreateTab();
+        }
+
+        public Tab(Browser browser, WebBrowser wb, Tab tab)
+        {
+            this.browser = browser;
+            this.wb = wb;
+            this.page = tab.page;
+            history = new History(tab.history);
             CreateTab();
         }
 
         public void AccessURL(String url)
         {
-            browser.Invoke(browser.tabPageLoading);
+            CheckIndex();
+            browser.Invoke(new MethodInvoker(delegate
+            {
+                if (index == browser.lockTab)
+                {
+                    //browser.tabPageLoadingMethod
+                    browser.textBox.Cursor = Cursors.WaitCursor;
+                }
+            }));
             page = GetHTTP(url);
             this.url = url;
-            history.Add("", url);
-            browser.Invoke(browser.textBoxSetDelegate,page);
+            history.Add(GetTitle(), url);
+            DisplayPage();
         }
 
         private void CreateTab()
         {
             tp = new TabPage();
+            wb.SetCurrentTab(this);
             browser.Invoke(browser.tabControlAddDelegate, tp);
             AccessURL(wb.GetHomepage());
+            GetTitle();
+        }
+
+        private void CheckIndex()
+        {
+            browser.Invoke(new MethodInvoker(delegate
+            {
+                index = browser.tabControl.SelectedIndex;
+            }));
         }
 
         private String GetHTTP(String url)
@@ -51,14 +80,50 @@ namespace WebBrowser
             {
                 try
                 {
-                    var responseString = client.DownloadString("http://www.google.com/");
+                    var responseString = client.DownloadString(url);
                     return responseString;
                 } catch (WebException e)
                 {
-                    //MessageBox.Show(e.Message);
                     return e.Message;
                 }
             }
+        }
+
+        private String GetTitle()
+        {
+            //Regex to grab <title>____<title>
+            return index.ToString();
+        }
+
+        public void TabSwitch()
+        {
+            DisplayPage();
+        }
+
+        public void Refresh()
+        {
+            AccessURL(url);
+        }
+
+        private bool DisplayPage()
+        {
+            bool locked = true;
+            CheckIndex();
+            browser.Invoke(new MethodInvoker(delegate
+            {
+                if (index == browser.lockTab)
+                {
+                    locked = false;
+                    //browser.Invoke(browser.textBoxSetDelegate, page);
+                    if (browser.textBox.Cursor == Cursors.WaitCursor)
+                        browser.textBox.Cursor = Cursors.Default;
+                    browser.textBox.Text = page;
+                    browser.URLBox.Text = url;
+                }
+            }));
+            if (locked)
+                return false;
+            return true;
         }
 
         public void Forward()
@@ -73,7 +138,14 @@ namespace WebBrowser
 
         public void Close()
         {
-
+            CheckIndex();
+            browser.Invoke(new MethodInvoker(delegate
+            {
+                if (index == browser.lockTab)
+                {
+                    browser.tabControl.Controls.Remove(tp);
+                }
+            }));
         }
     }
 }
