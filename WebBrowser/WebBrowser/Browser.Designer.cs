@@ -50,6 +50,8 @@
             this.closeTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateTabToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox = new System.Windows.Forms.TextBox();
+            this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeTabToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +82,8 @@
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.homeToolStripMenuItem,
-            this.bookmarksToolStripMenuItem});
+            this.bookmarksToolStripMenuItem,
+            this.historyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(784, 24);
@@ -92,6 +95,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newTabToolStripMenuItem,
             this.duplicateTabToolStripMenuItem,
+            this.closeTabToolStripMenuItem1,
             this.refreshToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -173,6 +177,7 @@
             // homeToolStripMenuItem
             // 
             this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
+            this.homeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
             this.homeToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.homeToolStripMenuItem.Text = "Home";
             this.homeToolStripMenuItem.Click += new System.EventHandler(this.homeToolStripMenuItem_Click);
@@ -236,8 +241,23 @@
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
             this.textBox.ReadOnly = true;
+            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox.Size = new System.Drawing.Size(760, 465);
             this.textBox.TabIndex = 0;
+            // 
+            // historyToolStripMenuItem
+            // 
+            this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.historyToolStripMenuItem.Text = "History";
+            // 
+            // closeTabToolStripMenuItem1
+            // 
+            this.closeTabToolStripMenuItem1.Name = "closeTabToolStripMenuItem1";
+            this.closeTabToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.closeTabToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.closeTabToolStripMenuItem1.Text = "Close Tab";
+            this.closeTabToolStripMenuItem1.Click += new System.EventHandler(this.closeTabToolStripMenuItem1_Click);
             // 
             // Browser
             // 
@@ -272,7 +292,6 @@
         private System.Windows.Forms.ToolStripMenuItem setHomepageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addBookmarkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bookmarksToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem nextTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem previousTabToolStripMenuItem;
@@ -283,6 +302,9 @@
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         public System.Windows.Forms.ContextMenuStrip tabContextMenuStrip;
         public System.Windows.Forms.TextBox URLBox;
+        public System.Windows.Forms.ToolStripMenuItem bookmarksToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem historyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem1;
     }
 }
 

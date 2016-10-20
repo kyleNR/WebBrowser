@@ -9,11 +9,12 @@ using System.Windows.Forms;
 namespace WebBrowser
 {
 
-    class WebBrowser
+    public class WebBrowser
     {
         private History history;
+        private Bookmarks bookmarks;
+        private FileGetter fg;
         private String homepage;
-        private List<Website> bookmarks;
         private List<Tab> tabList;
         private Tab currentTab;
 
@@ -23,18 +24,11 @@ namespace WebBrowser
         {
             this.browser = browser;
             history = new History();
-            homepage = LoadHomepage();
-            bookmarks = LoadBookmarks();
+            bookmarks = new Bookmarks();
+            fg = new FileGetter(history, bookmarks, "Data.xml");
             tabList = new List<Tab>();
-            
-        }
+            homepage = fg.GetHomepage();
 
-        private String LoadHomepage()
-        {
-            // Try getting homepage
-                //FileGetter fg = new FileGetter;
-            // else
-            return "http://www.google.com";
         }
 
         public String GetHomepage()
@@ -44,12 +38,39 @@ namespace WebBrowser
 
         public void SetHomepage()
         {
+            homepage = browser.URLBox.Text;
+            fg.SetHomepage(homepage);
+            //fg.SaveData();
+            Thread thread = new Thread(() => fg.SaveData());
+            thread.Start();
+        }
 
+        public History GetHistory()
+        {
+            return history;
+        }
+
+        public Bookmarks GetBookmarks()
+        {
+            return bookmarks;
         }
 
         private List<Website> LoadBookmarks()
         {
             return new List<Website>();
+        }
+
+        public void SetCurrentTab(Tab tab)
+        {
+            currentTab = tab;
+            if (!tabList.Contains(tab))
+                tabList.Add(tab);
+        }
+
+        public void AddBookmark()
+        {
+            Thread thread = new Thread(() => currentTab.AddBookmark());
+            thread.Start();
         }
 
         public void NewTab()
@@ -62,13 +83,6 @@ namespace WebBrowser
         {
             Thread thread = new Thread(() => new Tab(browser, this, currentTab));
             thread.Start();
-        }
-
-        public void SetCurrentTab(Tab tab)
-        {
-            currentTab = tab;
-            if (!tabList.Contains(tab))
-                tabList.Add(tab);
         }
 
         public void SwitchTab(int index)
@@ -92,12 +106,32 @@ namespace WebBrowser
 
         public void Forward()
         {
-
+            Thread thread = new Thread(() => currentTab.Forward());
+            thread.Start();
         }
 
-        public void Back()
+        public void Backward()
         {
+            Thread thread = new Thread(() => currentTab.Backward());
+            thread.Start();
+        }
 
+        public void CloseTab()
+        {
+            if (tabList.Count == 1)
+                return;
+            int index = currentTab.GetIndex();
+            tabList.Remove(currentTab);
+            Thread thread = new Thread(() => currentTab.Close());
+            thread.Start();
+            foreach (Tab tab in tabList)
+            {
+                if (tab.GetIndex() > index)
+                {
+                    Thread tabThread = new Thread(() => tab.SetIndex(tab.GetIndex() - 1));
+                    tabThread.Start();
+                }
+            }
         }
     }
 }

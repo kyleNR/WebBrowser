@@ -8,58 +8,56 @@ using System.Threading.Tasks;
 namespace WebBrowser
 {
 
-    struct Website
-    {
-        String name;
-        String url;
-        String time;
-        public Website (String name, String url)
-        {
-            DateTime dateTime = DateTime.Now;
-            this.name = name;
-            this.url = url;
-            this.time = dateTime.ToString();
-        }
-    }
-
     public class History
     {
-        private int index;
         private List<Website> webList;
 
         public History()
         {
             webList = new List<Website>();
-            index = -1;
         }
 
-        public History(History oldHistory)
+        public List<String> GetWebsiteListString()
         {
-
-            //webList = Duplicate(oldHistory);
+            List<String> stringList = new List<String>();
+            foreach (Website website in webList)
+            {
+                stringList.Add(website.ToString());
+            }
+            return stringList;
         }
 
-        public int GetIndex()
-        {
-            return index;
-        }
-
-        /*
-        public List<Website> GetWebList()
+        public List<Website> GetWebsiteList()
         {
             return webList;
-        }*/
+        }
 
         public int GetLength()
         {
             return webList.Count;
         }
 
-        public void Add(String name, String url)
+        public void Add(Website website)
+        {
+            webList.Add(website);
+        }
+
+        public Website Add(String name, String url)
         {
             Website website = new Website(name, url);
             webList.Add(website);
-            index++;
+            return website;
+        }
+
+        public String GetXML()
+        {
+            String output = "<History>";
+            foreach (Website website in webList)
+            {
+                output += String.Format("<Website><Name>{0}</Name><URL>{1}</URL><Time>{2}</Time></Website>", website.GetName(), website.GetURL(), website.GetTime());
+            }
+            output += "</History>";
+            return output;
         }
     }
 }

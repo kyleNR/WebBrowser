@@ -15,12 +15,12 @@ namespace WebBrowser
         public int lockTab;
         private WebBrowser wb;
 
-        public delegate void defaultDelegate();
         public delegate void stringDelegate(String text);
         public delegate void tabPageDelegate(TabPage tp);
-        public defaultDelegate tabPageLoading;
+        public delegate void stringTabPageDelegate(String text, TabPage tp);
         public stringDelegate textBoxSetDelegate;
         public tabPageDelegate tabControlAddDelegate;
+        public stringTabPageDelegate tabPageTitleDelegate;
 
         public Browser()
         {
@@ -28,9 +28,9 @@ namespace WebBrowser
             lockTab = tabControl.SelectedIndex;
             wb = new WebBrowser(this);
             InitialiseWindow();
-            tabPageLoading = new defaultDelegate(tabPageLoadingMethod);
             textBoxSetDelegate = new stringDelegate(SetTextBoxMethod);
             tabControlAddDelegate = new tabPageDelegate(AddTabPage);
+            tabPageTitleDelegate = new stringTabPageDelegate(SetTabPageTitle);
         }
 
         private void InitialiseWindow()
@@ -46,6 +46,11 @@ namespace WebBrowser
             textBox.Text = text;
         }
 
+        public void SetTabPageTitle(String title, TabPage tp)
+        {
+            tp.Text = title;
+        }
+
         public void AddTabPage(TabPage tp)
         {
             tabControl.Controls.Add(tp);
@@ -59,10 +64,9 @@ namespace WebBrowser
             textBox.Cursor = Cursors.WaitCursor;
         }
 
-
         private void bckbutton_Click(object sender, EventArgs e)
         {
-            wb.Back();
+            wb.Backward();
         }
 
         private void fwdbutton_Click(object sender, EventArgs e)
@@ -74,20 +78,30 @@ namespace WebBrowser
         {
             if (e.KeyCode == Keys.Enter)
             {
+                if (e.Modifiers == Keys.Control)
+                    URLBox.Text = "http://www." + URLBox.Text + ".com";
                 wb.Query(URLBox.Text);
             }
-            
         }
 
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             wb.NewTab();
         }
 
         private void bookmarksToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
+        }
 
+        public void historyTabItem_Click(object sender, EventArgs e, String url)
+        {
+            wb.Query(url);
+        }
+
+        public void bookmarksTabItem_Click(object sender, EventArgs e, String url)
+        {
+            wb.Query(url);
         }
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -99,7 +113,7 @@ namespace WebBrowser
 
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            wb.AddBookmark();
         }
 
         private void setHomepageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -144,6 +158,11 @@ namespace WebBrowser
         private void tabContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             MessageBox.Show("Event {0}", e.ToString());
+        }
+
+        private void closeTabToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            wb.CloseTab();
         }
     }
 }
