@@ -28,19 +28,32 @@ namespace WebBrowser
             this.time = time;
         }
 
-        public override String ToString()
-        {
-            return String.Format("{0} : {1} : {2}",name,url,time);
-        }
+        public override String ToString() { return String.Format("{0} : {1} : {2}",name,url,time); }
+        public String ToString(String name) { return String.Format("{0} : {1} : {2}", name, url, time); }
+        public String ToString(String name, String url) { return String.Format("{0} : {1} : {2}", name, url, time); }
+
+        public String ToStringShort() { return String.Format("{0} : {1}", name, url); }
+        public String ToStringShort(String name) { return String.Format("{0} : {1}", name, url); }
+        public String ToStringShort(String name, String url) { return String.Format("{0} : {1}", name, url); }
 
         public String GetName()
         {
             return name;
         }
 
+        public void SetName (String name)
+        {
+            this.name = name;
+        }
+
         public String GetURL()
         {
             return url;
+        }
+
+        public void SetURL(String url)
+        {
+            this.url = url;
         }
 
         public String GetTime()

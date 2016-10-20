@@ -14,13 +14,9 @@ namespace WebBrowser
     {
         public int lockTab;
         private WebBrowser wb;
-
-        public delegate void stringDelegate(String text);
+        
         public delegate void tabPageDelegate(TabPage tp);
-        public delegate void stringTabPageDelegate(String text, TabPage tp);
-        public stringDelegate textBoxSetDelegate;
         public tabPageDelegate tabControlAddDelegate;
-        public stringTabPageDelegate tabPageTitleDelegate;
 
         public Browser()
         {
@@ -28,9 +24,7 @@ namespace WebBrowser
             lockTab = tabControl.SelectedIndex;
             wb = new WebBrowser(this);
             InitialiseWindow();
-            textBoxSetDelegate = new stringDelegate(SetTextBoxMethod);
             tabControlAddDelegate = new tabPageDelegate(AddTabPage);
-            tabPageTitleDelegate = new stringTabPageDelegate(SetTabPageTitle);
         }
 
         private void InitialiseWindow()
@@ -39,16 +33,30 @@ namespace WebBrowser
             wb.NewTab();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Alt | Keys.Right))
+            {
+                wb.Forward();
+                return true;
+            } else if (keyData == (Keys.Alt | Keys.Left))
+            {
+                wb.Backward();
+                return true;
+            }
+            else if (keyData == (Keys.Alt | Keys.D))
+            {
+                URLBox.Focus();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         public void SetTextBoxMethod(String text)
         {
             if (textBox.Cursor == Cursors.WaitCursor)
                 textBox.Cursor = Cursors.Default;
             textBox.Text = text;
-        }
-
-        public void SetTabPageTitle(String title, TabPage tp)
-        {
-            tp.Text = title;
         }
 
         public void AddTabPage(TabPage tp)
@@ -89,19 +97,44 @@ namespace WebBrowser
             wb.NewTab();
         }
 
-        private void bookmarksToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         public void historyTabItem_Click(object sender, EventArgs e, String url)
         {
             wb.Query(url);
         }
 
-        public void bookmarksTabItem_Click(object sender, EventArgs e, String url)
+        public void bookmarksTabItem_Click(object sender, EventArgs e, Website website)
         {
-            wb.Query(url);
+            wb.Query(website.GetURL());
+        }
+
+        public void editBookmarkItem_Click(object sender, EventArgs e, Website website, ToolStripMenuItem bookmarkTab)
+        {
+            String name = Microsoft.VisualBasic.Interaction.InputBox("Edit Bookmark Name", "Edit Bookmark", website.GetName(), -1, -1);
+            if (name == "")
+                name = website.GetName();
+            website.SetName(name);
+            String url = Microsoft.VisualBasic.Interaction.InputBox("Edit Bookmark Url", "Edit Bookmark", website.GetURL(), -1, -1);
+            if (url == "")
+                url = website.GetURL();
+            website.SetURL(url);
+            bookmarkTab.Name = url;
+            bookmarkTab.Text = website.ToStringShort(name, url);
+            wb.SaveData();
+        }
+
+        public void deleteBookmarkItem_Click(object sender, EventArgs e,Bookmarks bookmarks, Website website, ToolStripMenuItem bookmarkTab)
+        {
+            bookmarks.Remove(website);
+            bookmarksToolStripMenuItem.DropDownItems.Remove(bookmarkTab);
+            wb.SaveData();
+        }
+
+        public void DeleteHistoryItems()
+        {
+            while (historyToolStripMenuItem.DropDownItems.Count > 0)
+            {
+                historyToolStripMenuItem.DropDownItems.RemoveAt(0);
+            }
         }
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -128,10 +161,12 @@ namespace WebBrowser
 
         private void tabControl_SelectedIndexChanged(Object sender, EventArgs e)
         {
-            //MessageBox.Show("You are in the TabControl.SelectedIndexChanged event.");
-            lockTab = tabControl.SelectedIndex;
-            tabPageLoadingMethod();
-            wb.SwitchTab(tabControl.SelectedIndex);
+            if (tabControl.TabCount > 0)
+            {
+                lockTab = tabControl.SelectedIndex;
+                tabPageLoadingMethod();
+                wb.SwitchTab(tabControl.SelectedIndex);
+            }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -163,6 +198,12 @@ namespace WebBrowser
         private void closeTabToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             wb.CloseTab();
+        }
+
+        private void clearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            wb.ClearHistory();
+            DeleteHistoryItems();
         }
     }
 }

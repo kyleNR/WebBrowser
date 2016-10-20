@@ -28,7 +28,7 @@ namespace WebBrowser
             fg = new FileGetter(history, bookmarks, "Data.xml");
             tabList = new List<Tab>();
             homepage = fg.GetHomepage();
-
+            AddDataToForm();
         }
 
         public String GetHomepage()
@@ -40,9 +40,7 @@ namespace WebBrowser
         {
             homepage = browser.URLBox.Text;
             fg.SetHomepage(homepage);
-            //fg.SaveData();
-            Thread thread = new Thread(() => fg.SaveData());
-            thread.Start();
+            SaveData();
         }
 
         public History GetHistory()
@@ -55,9 +53,64 @@ namespace WebBrowser
             return bookmarks;
         }
 
+        private void AddDataToForm()
+        {
+            LoadBookmarks();
+            LoadHistory();
+        }
+
+        public void SaveData()
+        {
+            Thread thread = new Thread(() => fg.SaveData());
+            thread.Start();
+        }
+
         private List<Website> LoadBookmarks()
         {
+            foreach (Website website in bookmarks.GetWebsiteList())
+            {
+                var bookmarkTab = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Name = website.GetURL(),
+                    Text = website.ToStringShort(),
+                };
+                bookmarkTab.Click += (sender, e) => browser.bookmarksTabItem_Click(sender, e, website);
+                var editBookmark = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Text = "Edit Bookmark",
+                };
+                editBookmark.Click += (sender, e) => browser.editBookmarkItem_Click(sender, e, website, bookmarkTab);
+                var deleteBookmark = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Text = "Delete Bookmark",
+                };
+                deleteBookmark.Click += (sender, e) => browser.deleteBookmarkItem_Click(sender, e, bookmarks, website, bookmarkTab);
+                bookmarkTab.DropDownItems.Add(editBookmark);
+                bookmarkTab.DropDownItems.Add(deleteBookmark);
+                browser.bookmarksToolStripMenuItem.DropDownItems.Add(bookmarkTab);
+            }
             return new List<Website>();
+        }
+
+        private List<Website> LoadHistory()
+        {
+            foreach (Website website in history.GetWebsiteList())
+            {
+                var historyTab = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Name = website.GetURL(),
+                    Text = website.ToString(),
+                };
+                historyTab.Click += (sender, e) => browser.historyTabItem_Click(sender, e, website.GetURL());
+                browser.historyToolStripMenuItem.DropDownItems.Add(historyTab);
+            }
+            return new List<Website>();
+        }
+
+        public void ClearHistory()
+        {
+            history.Clear();
+            SaveData();
         }
 
         public void SetCurrentTab(Tab tab)
@@ -71,6 +124,7 @@ namespace WebBrowser
         {
             Thread thread = new Thread(() => currentTab.AddBookmark());
             thread.Start();
+            SaveData();
         }
 
         public void NewTab()
@@ -102,6 +156,7 @@ namespace WebBrowser
         {
             Thread thread = new Thread(() => currentTab.AccessURL(url));
             thread.Start();
+            SaveData();
         }
 
         public void Forward()
@@ -119,7 +174,15 @@ namespace WebBrowser
         public void CloseTab()
         {
             if (tabList.Count == 1)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you would like to exit?", "Exit Program", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    fg.SaveData();
+                    System.Windows.Forms.Application.Exit();
+                }
                 return;
+            }
             int index = currentTab.GetIndex();
             tabList.Remove(currentTab);
             Thread thread = new Thread(() => currentTab.Close());

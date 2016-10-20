@@ -15,6 +15,11 @@ namespace WebBrowser
             bookmarks = new List<Website>();
         }
 
+        public List<Website> GetWebsiteList()
+        {
+            return bookmarks;
+        }
+
         public Website Add(String name, String url)
         {
 
@@ -26,6 +31,11 @@ namespace WebBrowser
         public void Add(Website website)
         {
             bookmarks.Add(website);
+        }
+
+        public void Remove(Website website)
+        {
+            bookmarks.Remove(website);
         }
 
         public void SetBookmarks(List<Website> bookmarks)

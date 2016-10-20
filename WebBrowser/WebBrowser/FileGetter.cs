@@ -65,7 +65,7 @@ namespace WebBrowser
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(fileXMLFormat());
                 doc.Save(file);
-                MessageBox.Show(String.Format("{0}", fileXMLFormat()));
+                //MessageBox.Show(String.Format("{0}", fileXMLFormat()));
             } catch (Exception e)
             {
                 MessageBox.Show(String.Format("{0}\n{1}", e.Message, fileXMLFormat()));
@@ -86,24 +86,28 @@ namespace WebBrowser
         {
             foreach (XmlNode websiteNode in node.ChildNodes)
             {
-                MessageBox.Show(websiteNode.Name);
+                //MessageBox.Show(websiteNode.Name);
                 String name = "";
                 String url = "";
                 String time = "";
 
                 foreach (XmlNode childNode in websiteNode.ChildNodes)
                 {
-                    switch (childNode.InnerText)
+                    //MessageBox.Show(childNode.Name);
+                    switch (childNode.Name)
                     {
                         case "Name":
                             name = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
                         case "URL":
                             url = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
                         case "Time":
                             time = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
+                        default:
+                            MessageBox.Show(childNode.InnerText);
+                            continue;
                     }
                 }
                 bookmarks.Add(new Website(name, url, time));
@@ -120,17 +124,18 @@ namespace WebBrowser
 
                 foreach (XmlNode childNode in websiteNode.ChildNodes)
                 {
-                    switch (childNode.InnerText)
+                    //MessageBox.Show(childNode.Name);
+                    switch (childNode.Name)
                     {
                         case "Name":
                             name = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
                         case "URL":
                             url = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
                         case "Time":
                             time = childNode.FirstChild.InnerText;
-                            break;
+                            continue;
                     }
                 }
                 history.Add(new Website(name, url, time));

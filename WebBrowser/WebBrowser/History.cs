@@ -48,6 +48,10 @@ namespace WebBrowser
             webList.Add(website);
             return website;
         }
+        public void Clear()
+        {
+            webList.Clear();
+        }
 
         public String GetXML()
         {

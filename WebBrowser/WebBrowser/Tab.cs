@@ -111,12 +111,28 @@ namespace WebBrowser
             Website website = bookmarks.Add(GetTitle(), url);
             browser.Invoke(new MethodInvoker(delegate
             {
+                String temp = Microsoft.VisualBasic.Interaction.InputBox("New Bookmark Name", "New Bookmark", website.GetName(), -1, -1);
+                if (temp == "")
+                    temp = GetTitle();
+                website.SetName(temp);
                 var bookmarkTab = new System.Windows.Forms.ToolStripMenuItem()
                 {
                     Name = website.GetURL(),
-                    Text = website.ToString(),
+                    Text = website.ToStringShort(),
                 };
-                bookmarkTab.Click += (sender, e) => browser.bookmarksTabItem_Click(sender, e, website.GetURL());
+                bookmarkTab.Click += (sender, e) => browser.bookmarksTabItem_Click(sender, e, website);
+                var editBookmark = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Text = "Edit Bookmark",
+                };
+                editBookmark.Click += (sender, e) => browser.editBookmarkItem_Click(sender, e, website, bookmarkTab);
+                var deleteBookmark = new System.Windows.Forms.ToolStripMenuItem()
+                {
+                    Text = "Delete Bookmark",
+                };
+                deleteBookmark.Click += (sender, e) => browser.deleteBookmarkItem_Click(sender, e, bookmarks, website, bookmarkTab);
+                bookmarkTab.DropDownItems.Add(editBookmark);
+                bookmarkTab.DropDownItems.Add(deleteBookmark);
                 browser.bookmarksToolStripMenuItem.DropDownItems.Add(bookmarkTab);
             }));
         }
@@ -210,14 +226,20 @@ namespace WebBrowser
         {
             String tempURL = tabHistory.Forward();
             if (url != tempURL)
+            {
+                url = tempURL;
                 AccessURL();
+            }
         }
 
         public void Backward()
         {
             String tempURL = tabHistory.Backward();
             if (url != tempURL)
+            {
+                url = tempURL;
                 AccessURL();
+            }
         }
 
         public void Close()
@@ -241,11 +263,10 @@ namespace WebBrowser
                 if (index == browser.lockTab)
                 {
                     locked = false;
-                    //browser.Invoke(browser.textBoxSetDelegate, page);
                     browser.textBox.Cursor = Cursors.Default;
                     browser.textBox.Text = page;
                     browser.URLBox.Text = url;
-                    browser.Invoke(browser.tabPageTitleDelegate, GetTitle(), tp);
+                    tp.Text = GetTitle();
                 }
             }));
             if (locked)
