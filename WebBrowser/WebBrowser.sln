@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBrowser", "WebBrowser\WebBrowser.csproj", "{04E2CBE5-B33D-4A97-AB23-0131E9E3CF78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBrowserTests", "WebBrowserTests\WebBrowserTests.csproj", "{E6731B3B-39D1-4314-B871-A9C2BE4BBDE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{04E2CBE5-B33D-4A97-AB23-0131E9E3CF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04E2CBE5-B33D-4A97-AB23-0131E9E3CF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04E2CBE5-B33D-4A97-AB23-0131E9E3CF78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6731B3B-39D1-4314-B871-A9C2BE4BBDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6731B3B-39D1-4314-B871-A9C2BE4BBDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6731B3B-39D1-4314-B871-A9C2BE4BBDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6731B3B-39D1-4314-B871-A9C2BE4BBDE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

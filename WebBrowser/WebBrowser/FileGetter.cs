@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -29,16 +25,16 @@ namespace WebBrowser
             this.homepage = homepage;
         }
 
+        //Grabs data from XML file
         private void GetData()
         {
             try
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(file);
-                //MessageBox.Show(String.Format("{0}", doc.DocumentElement.ToString()));
                 foreach (XmlNode node in doc.DocumentElement.ChildNodes)
                 {
-                    //MessageBox.Show(node.Name);
+                    //Checks each XML node to determine function
                     switch (node.Name)
                     {
                         case "Bookmarks":
@@ -54,10 +50,13 @@ namespace WebBrowser
                 }
             } catch
             {
+                //If no data loaded then homepage is set to default
+                //Bookmarks and history kept blank
                 homepage = "http://www.google.com";
             }
         }
 
+        //Saves data to file
         public void SaveData()
         {
             try
@@ -65,35 +64,35 @@ namespace WebBrowser
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(fileXMLFormat());
                 doc.Save(file);
-                //MessageBox.Show(String.Format("{0}", fileXMLFormat()));
             } catch (Exception e)
             {
-                MessageBox.Show(String.Format("{0}\n{1}", e.Message, fileXMLFormat()));
+                MessageBox.Show(String.Format("{0}\nFailed To Save Data\n\nXML:\n{1}", e.Message, fileXMLFormat()));
             }
         }
 
+        //Creates complete file to save
         private String fileXMLFormat()
         {
             return String.Format("<File>{0}{1}{2}</File>", homepageToXML(), history.GetXML(), bookmarks.GetXML());
         }
 
+        //Converts homepage string to XML string
         private String homepageToXML()
         {
             return String.Format("<Homepage>{0}</Homepage>", homepage);
         }
 
+        //Adds bookmarks data to application from data file
         public void SetBookmarks(XmlNode node)
         {
             foreach (XmlNode websiteNode in node.ChildNodes)
             {
-                //MessageBox.Show(websiteNode.Name);
                 String name = "";
                 String url = "";
                 String time = "";
 
                 foreach (XmlNode childNode in websiteNode.ChildNodes)
                 {
-                    //MessageBox.Show(childNode.Name);
                     switch (childNode.Name)
                     {
                         case "Name":
@@ -105,15 +104,13 @@ namespace WebBrowser
                         case "Time":
                             time = childNode.FirstChild.InnerText;
                             continue;
-                        default:
-                            MessageBox.Show(childNode.InnerText);
-                            continue;
                     }
                 }
                 bookmarks.Add(new Website(name, url, time));
             }
         }
 
+        //Adds history data to application from data file
         private void SetHistory(XmlNode node)
         {
             foreach (XmlNode websiteNode in node.ChildNodes)
@@ -124,7 +121,6 @@ namespace WebBrowser
 
                 foreach (XmlNode childNode in websiteNode.ChildNodes)
                 {
-                    //MessageBox.Show(childNode.Name);
                     switch (childNode.Name)
                     {
                         case "Name":

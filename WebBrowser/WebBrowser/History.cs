@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebBrowser
 {
@@ -15,16 +11,6 @@ namespace WebBrowser
         public History()
         {
             webList = new List<Website>();
-        }
-
-        public List<String> GetWebsiteListString()
-        {
-            List<String> stringList = new List<String>();
-            foreach (Website website in webList)
-            {
-                stringList.Add(website.ToString());
-            }
-            return stringList;
         }
 
         public List<Website> GetWebsiteList()
@@ -42,17 +28,22 @@ namespace WebBrowser
             webList.Add(website);
         }
 
+        //Adds item to history
         public Website Add(String name, String url)
         {
+            //Creates struct to hold item
             Website website = new Website(name, url);
             webList.Add(website);
             return website;
         }
+
+        //Clears history
         public void Clear()
         {
             webList.Clear();
         }
 
+        //Gets full history in XML
         public String GetXML()
         {
             String output = "<History>";

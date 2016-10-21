@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebBrowser
 {
@@ -20,19 +17,23 @@ namespace WebBrowser
             return bookmarks;
         }
 
+        //Adds item to bookmarks
+        //Returns website to allow easy creation while adding to bookmarks
         public Website Add(String name, String url)
         {
-
+            //Creates struct to hold item
             Website website = new Website(name, url);
             bookmarks.Add(website);
             return website;
         }
 
+        //Adds item to bookmarks
         public void Add(Website website)
         {
             bookmarks.Add(website);
         }
 
+        //Removes item from bookmarks
         public void Remove(Website website)
         {
             bookmarks.Remove(website);
@@ -43,6 +44,7 @@ namespace WebBrowser
             this.bookmarks = bookmarks;
         }
 
+        //Gets full bookmarks list in XML
         public String GetXML()
         {
             String output = "<Bookmarks>";

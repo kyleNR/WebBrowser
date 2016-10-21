@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebBrowser
 {
@@ -20,22 +17,12 @@ namespace WebBrowser
             futureList = new Stack<String>();
         }
 
+        //Second constructor for duplication
         public TabHistory(TabHistory oldTH)
         {
             this.history = oldTH.GetHistory();
             pastList = Duplicate(oldTH.GetPastURLStringStack());
             futureList = Duplicate(oldTH.GetFutureURLStringStack());
-            //Stack<String> temp = new Stack<string>();
-            //foreach(String url in oldTH.GetPastURLStringStack())
-            //{
-                //futureList.Push(url);
-                //Reverse(pastList);
-            //}
-            //foreach (String url in oldTH.GetFutureURLStringStack())
-            //{
-                //pastList.Push(url);
-                //Reverse(futureList);
-            //}
         }
 
         public History GetHistory()
@@ -53,34 +40,37 @@ namespace WebBrowser
             return futureList;
         }
 
+        //Adds new URL to tab history
         public void Add(String url)
         {
             pastList.Push(url);
             futureList.Clear();
         }
 
+        //Moves tab history forward
         public String Forward()
         {
             if (futureList.Count > 0)
             {
-                String url = futureList.Pop();
-                pastList.Push(url);
-                return url;
-            } else
-            {
-                return pastList.Peek();
+                //Moves URL from future stack to past stack
+                pastList.Push(futureList.Pop());
             }
+            return pastList.Peek();
         }
 
+        //Moves tab history backward
         public String Backward()
         {
             if (pastList.Count > 1)
             {
+                //Moves URL from past stack to future stack
                 futureList.Push(pastList.Pop());
             }
             return pastList.Peek();
         }
 
+        //Duplicate stack
+        //Returns new stack with same elements as stack input
         private Stack<String> Duplicate(Stack<String> stack)
         {
             Stack<String> tempStack = new Stack<String>();

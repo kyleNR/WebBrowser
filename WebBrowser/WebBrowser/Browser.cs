@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WebBrowser
 {
     public partial class Browser : Form
     {
-        public int lockTab;
+        private int lockTab; //Used to identify current tab and to block access from other tabs
         private WebBrowser wb;
         
         public delegate void tabPageDelegate(TabPage tp);
@@ -23,16 +16,17 @@ namespace WebBrowser
             InitializeComponent();
             lockTab = tabControl.SelectedIndex;
             wb = new WebBrowser(this);
-            InitialiseWindow();
+            URLBox.Text = wb.GetHomepage();
+            wb.NewTab();
             tabControlAddDelegate = new tabPageDelegate(AddTabPage);
         }
 
-        private void InitialiseWindow()
+        public int GetLockTab()
         {
-            URLBox.Text = wb.GetHomepage();
-            wb.NewTab();
+            return lockTab;
         }
 
+        //Method override for shortcuts not linked to menu items
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Alt | Keys.Right))
@@ -52,13 +46,7 @@ namespace WebBrowser
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        public void SetTextBoxMethod(String text)
-        {
-            if (textBox.Cursor == Cursors.WaitCursor)
-                textBox.Cursor = Cursors.Default;
-            textBox.Text = text;
-        }
-
+        //Add Tab Method
         public void AddTabPage(TabPage tp)
         {
             tabControl.Controls.Add(tp);
@@ -67,21 +55,26 @@ namespace WebBrowser
             tp.Text = lockTab.ToString();
         }
 
+        //Used to identify when page is being loaded in
         public void tabPageLoadingMethod()
         {
             textBox.Cursor = Cursors.WaitCursor;
         }
 
+        //Back Button Click Event
         private void bckbutton_Click(object sender, EventArgs e)
         {
             wb.Backward();
         }
 
+        //Forward Button Click Event
         private void fwdbutton_Click(object sender, EventArgs e)
         {
             wb.Forward();
         }
 
+        //Used to add ENTER shortcut to URLBox for query
+        //Used to add CTRL + ENTER shortcut to URLBox for quick query
         private void URLBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -92,24 +85,30 @@ namespace WebBrowser
             }
         }
 
+        //New Tab Menu Item Click Event
         private void newTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.NewTab();
         }
 
+        //History Menu Item Click Event
         public void historyTabItem_Click(object sender, EventArgs e, String url)
         {
             wb.Query(url);
         }
 
+        //Bookmark Menu Item Click Event
         public void bookmarksTabItem_Click(object sender, EventArgs e, Website website)
         {
             wb.Query(website.GetURL());
         }
 
+        //Edit Bookmark Menu Item Click Event
         public void editBookmarkItem_Click(object sender, EventArgs e, Website website, ToolStripMenuItem bookmarkTab)
         {
+            //Creates Visual Basic InputBox for user input
             String name = Microsoft.VisualBasic.Interaction.InputBox("Edit Bookmark Name", "Edit Bookmark", website.GetName(), -1, -1);
+            //If user enters no input, or cancels box then sets name to default
             if (name == "")
                 name = website.GetName();
             website.SetName(name);
@@ -122,6 +121,7 @@ namespace WebBrowser
             wb.SaveData();
         }
 
+        //DeleteBookmark Menu Item Click Event
         public void deleteBookmarkItem_Click(object sender, EventArgs e,Bookmarks bookmarks, Website website, ToolStripMenuItem bookmarkTab)
         {
             bookmarks.Remove(website);
@@ -129,14 +129,7 @@ namespace WebBrowser
             wb.SaveData();
         }
 
-        public void DeleteHistoryItems()
-        {
-            while (historyToolStripMenuItem.DropDownItems.Count > 0)
-            {
-                historyToolStripMenuItem.DropDownItems.RemoveAt(0);
-            }
-        }
-
+        //Home Menu Item Click Event
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String homepage = wb.GetHomepage();
@@ -144,21 +137,25 @@ namespace WebBrowser
             wb.Query(homepage);
         }
 
+        //Add Bookmark Menu Item Click Event
         private void addBookmarkToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.AddBookmark();
         }
 
+        //Set Homepage Menu Item Click Event
         private void setHomepageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.SetHomepage();
         }
 
+        //Duplicate Tab Menu Item Click Event
         private void duplicateTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.DuplicateTab();
         }
 
+        //Change Selected Tab Event
         private void tabControl_SelectedIndexChanged(Object sender, EventArgs e)
         {
             if (tabControl.TabCount > 0)
@@ -169,11 +166,13 @@ namespace WebBrowser
             }
         }
 
+        //Refresh Menu Item Click Event
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.Refresh();
         }
 
+        //Next Tab Menu Item Click Event
         private void nextTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tabControl.SelectedIndex == (tabControl.TabCount - 1))
@@ -182,6 +181,7 @@ namespace WebBrowser
                 tabControl.SelectedIndex++;
         }
 
+        //Previous Tab Menu Item Click Event
         private void previousTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tabControl.SelectedIndex == 0)
@@ -190,20 +190,26 @@ namespace WebBrowser
                 tabControl.SelectedIndex--;
         }
 
-        private void tabContextMenuStrip_Opening(object sender, CancelEventArgs e)
-        {
-            MessageBox.Show("Event {0}", e.ToString());
-        }
-
+        //Close Tab Menu Item Click Event
         private void closeTabToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             wb.CloseTab();
         }
 
+        //Clear History Menu Item Click Event
         private void clearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             wb.ClearHistory();
             DeleteHistoryItems();
+        }
+
+        //Remove History Menu Items Method
+        public void DeleteHistoryItems()
+        {
+            while (historyToolStripMenuItem.DropDownItems.Count > 0)
+            {
+                historyToolStripMenuItem.DropDownItems.RemoveAt(0);
+            }
         }
     }
 }
